@@ -17,7 +17,7 @@
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
-.env
-.idea
-composer.lock
+/.env
+/.idea
+/.composer.lock
 ###< symfony/phpunit-bridge ###
