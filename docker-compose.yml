@@ -26,5 +26,10 @@ services:
     restart: always
     links:
       - database
+  api-ecole-directes:
+    container_name: test
+    image: bfoujols/mock-api-ecole-directe
+    ports:
+    - "9042:80"
 volumes:
   dbdata:
