@@ -27,7 +27,7 @@ services:
     links:
       - database
   api-ecole-directes:
-    container_name: test
+    container_name: ed-api
     image: bfoujols/mock-api-ecole-directe
     ports:
     - "9042:80"

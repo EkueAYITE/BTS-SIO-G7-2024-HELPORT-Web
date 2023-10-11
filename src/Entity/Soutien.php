@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SoutienRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,6 +27,21 @@ class Soutien
 
     #[ORM\Column]
     private ?int $statut = null;
+
+    #[ORM\ManyToMany(targetEntity: Competence::class, mappedBy: 'id_competence')]
+    private Collection $competences;
+
+    #[ORM\OneToMany(mappedBy: 'soutien', targetEntity: Demande::class)]
+    private Collection $id_demande;
+
+    #[ORM\ManyToOne(inversedBy: 'soutiens')]
+    private ?Salle $id_salle = null;
+
+    public function __construct()
+    {
+        $this->competences = new ArrayCollection();
+        $this->id_demande = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +92,75 @@ class Soutien
     public function setStatut(int $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetences(): Collection
+    {
+        return $this->competences;
+    }
+
+    public function addCompetence(Competence $competence): static
+    {
+        if (!$this->competences->contains($competence)) {
+            $this->competences->add($competence);
+            $competence->addIdCompetence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competence $competence): static
+    {
+        if ($this->competences->removeElement($competence)) {
+            $competence->removeIdCompetence($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getIdDemande(): Collection
+    {
+        return $this->id_demande;
+    }
+
+    public function addIdDemande(Demande $idDemande): static
+    {
+        if (!$this->id_demande->contains($idDemande)) {
+            $this->id_demande->add($idDemande);
+            $idDemande->setSoutien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdDemande(Demande $idDemande): static
+    {
+        if ($this->id_demande->removeElement($idDemande)) {
+            // set the owning side to null (unless already changed)
+            if ($idDemande->getSoutien() === $this) {
+                $idDemande->setSoutien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIdSalle(): ?Salle
+    {
+        return $this->id_salle;
+    }
+
+    public function setIdSalle(?Salle $id_salle): static
+    {
+        $this->id_salle = $id_salle;
 
         return $this;
     }

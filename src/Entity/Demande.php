@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DemandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,6 +24,20 @@ class Demande
 
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
+
+    #[ORM\OneToMany(mappedBy: 'demande', targetEntity: User::class)]
+    private Collection $id_user;
+
+    #[ORM\ManyToOne(inversedBy: 'id_demande')]
+    private ?Soutien $soutien = null;
+
+    #[ORM\ManyToOne(inversedBy: 'demandes')]
+    private ?Matiere $id_matiere = null;
+
+    public function __construct()
+    {
+        $this->id_user = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +76,60 @@ class Demande
     public function setStatut(string $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getIdUser(): Collection
+    {
+        return $this->id_user;
+    }
+
+    public function addIdUser(User $idUser): static
+    {
+        if (!$this->id_user->contains($idUser)) {
+            $this->id_user->add($idUser);
+            $idUser->setDemande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdUser(User $idUser): static
+    {
+        if ($this->id_user->removeElement($idUser)) {
+            // set the owning side to null (unless already changed)
+            if ($idUser->getDemande() === $this) {
+                $idUser->setDemande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSoutien(): ?Soutien
+    {
+        return $this->soutien;
+    }
+
+    public function setSoutien(?Soutien $soutien): static
+    {
+        $this->soutien = $soutien;
+
+        return $this;
+    }
+
+    public function getIdMatiere(): ?Matiere
+    {
+        return $this->id_matiere;
+    }
+
+    public function setIdMatiere(?Matiere $id_matiere): static
+    {
+        $this->id_matiere = $id_matiere;
 
         return $this;
     }
