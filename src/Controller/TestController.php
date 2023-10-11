@@ -15,6 +15,8 @@ class TestController extends AbstractController
         $client = new Client([
             "client_id" => "flore",
             "client_secret" => "test",
+            "base_path"     => "http://localhost:9042",
+            "mock"          => true,
         ]);
         echo "<h1>API ECOLE DIRECTE via DotEnv</h1>";
 // Recupération du token et profile
