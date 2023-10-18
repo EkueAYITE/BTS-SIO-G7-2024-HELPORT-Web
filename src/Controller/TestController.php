@@ -12,22 +12,37 @@ class TestController extends AbstractController
     #[Route('/test', name: 'app_test')]
     public function index(): Response
     {
-        $client = new Client([
-            "client_id" => "flore",
-            "client_secret" => "test",
-            "base_path"     => "http://localhost:9042",
-            "mock"          => true,
+
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_PORT => "9042",
+            CURLOPT_URL => "http://localhost:9042/etudiants",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "",
+
         ]);
-        echo "<h1>API ECOLE DIRECTE via DotEnv</h1>";
-// Recupération du token et profile
-        $etudiant = $client->fetchAccessToken();
-        echo "Token: {$etudiant->getToken()} <br>";
-        echo "Email: {$etudiant->getEmail()} <br>";
-        echo "Nom: {$etudiant->getNom()} <br>";
-        echo "Prenom: {$etudiant->getPrenom()} <br>";
-        echo "Identifiant: {$etudiant->getIdentifiant()} <br>";
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            dump(json_decode($response));
+        }
         return $this->render('test/index.html.twig', [
             'controller_name' => 'TestController',
         ]);
+
+
     }
 }

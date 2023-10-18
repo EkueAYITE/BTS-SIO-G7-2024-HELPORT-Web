@@ -28,8 +28,14 @@ services:
       - database
   api-ecole-directes:
     container_name: ed-api
-    image: bfoujols/mock-api-ecole-directe
+    image: bfoujols/mock-api-ecole-directe:latest
     ports:
     - "9042:80"
+    volumes:
+    - ./var/dbdataset:/var/www/mock-ecole-directe-api/var
+  #mailer:
+    #container_name: 2024-Helport-Web-mailer
+    #image: schickling/mailcatcher
+    #ports: [ "1025", "1080" ]
 volumes:
   dbdata:
