@@ -12,35 +12,36 @@ class VerificationAPIController extends AbstractController
     #[Route('/verification', name: 'app_verification_a_p_i')]
     public function index(): Response
     {
-
         if (isset($_POST['username']) && isset($_POST['password'])) {
             $client = new Client([
                 "client_id" => $_POST['username'],
                 "client_secret" => $_POST['password'],
-                "base_path"     => "http://localhost:9042",
-                "mock"          => true,
+                "base_path" => "http://localhost:9042",
+                "mock" => true,
             ]);
-            // Recupération du token et profile
+
+            // Vérification de l'API
             $etudiant = $client->fetchAccessToken();
-            echo "Token: {$etudiant->getToken()} <br>";
-            echo "Email: {$etudiant->getEmail()} <br>";
-            echo "Nom: {$etudiant->getNom()} <br>";
-            echo "Prenom: {$etudiant->getPrenom()} <br>";
-            echo "Identifiant: {$etudiant->getIdentifiant()} <br>";
-        } else {
-            echo "<h1>API ECOLE DIRECTE via Form</h1>";
-            echo "<form method='post'>";
-            echo  "<label for='username'> Username </label>";
-            echo  "<input type='text' name='username' id='username' required>";
-            echo "<label for='password'> Password </label>";
-            echo "<input type='password' name='password' id='password' required>";
-            echo "<input type='submit' value='Envoyer'>";
-            echo "</form>";
+
+            // Redirection si la vérification est un succès
+            return $this->render('test/index.html.twig', [
+                'controller_name' => 'VerificationAPIController',
+            ]);
         }
 
+        // Affichage du formulaire si la vérification échoue ou si aucune donnée POST n'est fournie
+        echo "<h1>API ECOLE DIRECTE via Form</h1>";
+        echo "<form method='post'>";
+        echo  "<label for='username'> Username </label>";
+        echo  "<input type='text' name='username' id='username' required>";
+        echo "<label for 'password'> Password </label>";
+        echo "<input type='password' name='password' id='password' required>";
+        echo "<input type='submit' value='Envoyer'>";
+        echo "</form";
 
         return $this->render('verification_api/index.html.twig', [
             'controller_name' => 'VerificationAPIController',
         ]);
     }
 }
+
