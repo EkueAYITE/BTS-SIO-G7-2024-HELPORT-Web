@@ -24,7 +24,7 @@ class VerificationAPIController extends AbstractController
             $etudiant = $client->fetchAccessToken();
 
             // Redirection si la vérification est un succès
-            return $this->render('test/index.html.twig', [
+            return $this->render('inscription/redirection-mail.html.twig', [
                 'controller_name' => 'VerificationAPIController',
             ]);
         }
