@@ -45,9 +45,38 @@ class AppFixtures extends Fixture
                         $user ->setSexe(1);
                     }
 
-            $manager->persist($etudiant);
-        }
+                    elseif ($etudiant['sexe'] == 'F')
+                    {
+                        $user->setSexe(2);
+                    }
 
-        $manager->flush();
+                    if ($etudiant['typeCompte']== 'E')
+                    {
+                        $user->setRoles(['ROLE_USER']);
+                    }
+
+                    else
+                    {
+                        $user->setRoles(['ROLE_ADMIN']);
+
+                    }
+
+                    $classeId = $etudiant['classeId'];
+                    $classeInfo = json_decode($classeId, true);
+                    $libelleClasse = $classeInfo['libelle'];
+
+                    $user->setPrenom($etudiant['prenom']);
+                    $user->setNom($etudiant['nom']);
+                    $user->setEmail($etudiant['email']);
+                    $user->setNiveau($libelleClasse);
+                    $user->setPassword($etudiant['password']);
+                    $user->setTelephone($etudiant['telPortable']);
+
+                    $manager->persist($user);
+                }
+            }
+
+            $manager->flush();
+        }
     }
 }
