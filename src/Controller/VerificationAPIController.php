@@ -30,15 +30,6 @@ class VerificationAPIController extends AbstractController
         }
 
         // Affichage du formulaire si la vérification échoue ou si aucune donnée POST n'est fournie
-        echo "<h1>API ECOLE DIRECTE via Form</h1>";
-        echo "<form method='post'>";
-        echo  "<label for='username'> Username </label>";
-        echo  "<input type='text' name='username' id='username' required>";
-        echo "<label for 'password'> Password </label>";
-        echo "<input type='password' name='password' id='password' required>";
-        echo "<input type='submit' value='Envoyer'>";
-        echo "</form";
-
         return $this->render('verification_api/index.html.twig', [
             'controller_name' => 'VerificationAPIController',
         ]);
