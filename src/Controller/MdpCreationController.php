@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use ContainerLWmVdh5\getMailerControllerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,8 +12,6 @@ class MdpCreationController extends AbstractController
     #[Route('/mdpCreation', name: 'app_mdp_creation')]
     public function index(): Response
     {
-
-
 
 
 

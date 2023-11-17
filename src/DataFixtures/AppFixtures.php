@@ -72,6 +72,7 @@ class AppFixtures extends Fixture
                     $user->setPassword($etudiant['password']);
                     $user->setTelephone($etudiant['telPortable']);
 
+
                     $manager->persist($user);
                 }
             }
