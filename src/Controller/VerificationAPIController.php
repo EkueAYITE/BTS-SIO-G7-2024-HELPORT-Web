@@ -5,12 +5,13 @@ namespace App\Controller;
 use Studoo\Api\EcoleDirecte\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class VerificationAPIController extends AbstractController
 {
     #[Route('/verification', name: 'app_verification_a_p_i')]
-    public function index(): Response
+    public function index(TokenGeneratorController $tokenGenerate): Response
     {
         if (isset($_POST['username']) && isset($_POST['password'])) {
             $client = new Client([
@@ -20,8 +21,18 @@ class VerificationAPIController extends AbstractController
                 "mock" => true,
             ]);
 
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+
+
             // Vérification de l'API
             $etudiant = $client->fetchAccessToken();
+
+            $tokenGenerate->token();
+
+
+
 
             // Redirection si la vérification est un succès
             return $this->render('inscription/redirection-mail.html.twig', [
