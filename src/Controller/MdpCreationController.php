@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MdpCreationController extends AbstractController
 {
-    #[Route('/mdpCreation', name: 'app_mdp_creation')]
+    #[Route('/mdpCreation/{token}', name: 'app_mdp_creation')]
     public function index(): Response
     {
 

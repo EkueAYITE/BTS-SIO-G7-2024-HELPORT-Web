@@ -2,24 +2,30 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use ContainerQRDPOxy\getMailer_TransportFactory_SendmailService;
+use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Expr\Array_;
 use Studoo\Api\EcoleDirecte\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class VerificationAPIController extends AbstractController
 {
     #[Route('/verification', name: 'app_verification_a_p_i')]
-    public function index(TokenGeneratorController $tokenGenerate, MailerInterface $mailer): Response
+    public function index(SessionInterface $session, TokenGeneratorInterface $tokenGenerator, MailerInterface $mailer, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder): Response
     {
 
         $errorMessage = null;
         if (isset($_POST['username']) && isset($_POST['password'])) {
-
+            try {
+                // Vérification de l'API
                 $client = new Client([
                     "client_id" => $_POST['username'],
                     "client_secret" => $_POST['password'],
@@ -27,26 +33,50 @@ class VerificationAPIController extends AbstractController
                     "mock" => true,
                 ]);
 
-                /*if (session_status() == PHP_SESSION_NONE) {
-                    session_start();
-                }*/
 
-                try {
-                    // Vérification de l'API
-                    $etudiant = $client->fetchAccessToken();
-                    //$tokenGenerate->token();
+
+
+
+                    $etudiantData = $client->fetchAccessToken();
+                    $email = $etudiantData->getEmail();
+                    $session->set('email', $email);
+                    $token = $tokenGenerator->generateToken();
+                    dump($token);
+
+                    $etudiant = new User();
+
+                    $etudiantProfil = $etudiantData->getProfile();
+                    if ($etudiantProfil['sexe'] === 'F') {
+                        $etudiantSexe = 1;
+                    } else {
+                        $etudiantSexe = 2;
+                    }
+
+
+                    $etudiant->setPrenom($etudiantData->getPrenom());
+                    $etudiant->setNom($etudiantData->getNom());
+                    $etudiant->setSexe($etudiantSexe);
+                    $etudiant->setEmail($etudiantData->getEmail());
+                    $etudiant->setNiveau($etudiantProfil['classe']['libelle']);
+                    $etudiant->setRoles(['ROLE_USER']);
+                    $hashedPassword = $passwordEncoder->hashPassword($etudiant, $token);
+                    $etudiant->setPassword($hashedPassword);
+                    $etudiant->setTelephone($etudiantProfil['telPortable']);
+                    dump($etudiant);
+
+
+                    $entityManager->persist($etudiant);
+                    $entityManager->flush();
+
+                    $emailEtudiant = $client->fetchAccessToken()->getEmail();
 
                     $email = (new Email())
-                        ->from('send@OrtMontreuil.fr')
-                        ->to('eleve.ort@ortMontreuil.fr')
-                        //->cc('cc@example.com')
-                        //->bcc('bcc@example.com')
-                        //->replyTo('fabien@example.com')
-                        //->priority(Email::PRIORITY_HIGH)
+                        ->from('hello@example.com')
+                        ->to($emailEtudiant)
                         ->subject('Time for Symfony Mailer!')
                         ->text('Sending emails is fun again!')
-                        ->html('<p>Bonjour, connecte toi par <a href="http://127.0.0.1:8000/mdpCreation">ici</a></p>');
-
+                        ->html('<p>See Twig integration for better HTML integration!</p><br><a href="http://127.0.0.1:8000/mdpCreation/'. $token .'">Modifier mot de passe</a>');
+                    dump($token);
                     $mailer->send($email);
 
 
