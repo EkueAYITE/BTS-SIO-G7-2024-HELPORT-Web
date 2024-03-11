@@ -3,54 +3,50 @@
 {% block title %}Confirmation de mot de passe{% endblock %}
 
 {% block body %}
-<html>
-<head>
-    <title>Confirmation de mot de passe</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: #FFF;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
+    <html>
+    <head>
+        <title>Confirmation de mot de passe</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+            }
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #007BFF;
+                color: #FFF;
+                text-decoration: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+
     <h1>Confirmation de mot de passe</h1>
-    <form id="form" method="post">
-        <div class="form-group">
-            <label for="password">Nouveau mot de passe :</label>
-            <input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Le mot de passe doit contenir au moins 8 caractères, dont au moins un chiffre, une minuscule et une majuscule." required>
-        </div>
-        <div class="form-group">
-            <label for="confirm-password">Confirmer le mot de passe :</label>
-            <input type="password" id="confirm-password" name="confirm-password" required>
-        </div>
-        <div>
-            <input type="submit" value="Confirmer" class="btn">
-        </div>
-    </form>
-</body>
-</html>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.password) }}
+    {{ form_row(form.confirmPassword) }}
+
+    <input type="submit"  class="btn" id="submitMdp" name="submitMdp">
+    {{ form_end(form) }}
+    </body>
+    </html>
 {% endblock %}

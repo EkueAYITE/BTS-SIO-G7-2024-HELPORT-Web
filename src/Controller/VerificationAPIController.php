@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use ContainerQRDPOxy\getMailer_TransportFactory_SendmailService;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use PhpParser\Node\Expr\Array_;
+use PHPUnit\Util\Exception;
 use Studoo\Api\EcoleDirecte\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,11 +17,12 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 
 class VerificationAPIController extends AbstractController
 {
     #[Route('/verification', name: 'app_verification_a_p_i')]
-    public function index(SessionInterface $session, TokenGeneratorInterface $tokenGenerator, MailerInterface $mailer, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder): Response
+    public function index(TokenGeneratorInterface $tokenGenerator, SessionInterface $session,  JWTTokenManagerInterface $JWTManager, MailerInterface $mailer, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder): Response
     {
 
         $errorMessage = null;
@@ -35,13 +38,13 @@ class VerificationAPIController extends AbstractController
 
 
 
-
+               //dd($client->fetchAccessToken());
 
                     $etudiantData = $client->fetchAccessToken();
                     $email = $etudiantData->getEmail();
                     $session->set('email', $email);
                     $token = $tokenGenerator->generateToken();
-                    dump($token);
+                    //dump($token);
 
                     $etudiant = new User();
 
@@ -52,6 +55,7 @@ class VerificationAPIController extends AbstractController
                         $etudiantSexe = 2;
                     }
 
+                   // dd($etudiantProfil);
 
                     $etudiant->setPrenom($etudiantData->getPrenom());
                     $etudiant->setNom($etudiantData->getNom());
@@ -62,11 +66,12 @@ class VerificationAPIController extends AbstractController
                     $hashedPassword = $passwordEncoder->hashPassword($etudiant, $token);
                     $etudiant->setPassword($hashedPassword);
                     $etudiant->setTelephone($etudiantProfil['telPortable']);
-                    dump($etudiant);
+                    //var_dump($etudiant);
 
-
+                    $tokenModification = $JWTManager->create($etudiant);
                     $entityManager->persist($etudiant);
                     $entityManager->flush();
+                   // var_dump($entityManager);
 
                     $emailEtudiant = $client->fetchAccessToken()->getEmail();
 
@@ -75,8 +80,8 @@ class VerificationAPIController extends AbstractController
                         ->to($emailEtudiant)
                         ->subject('Time for Symfony Mailer!')
                         ->text('Sending emails is fun again!')
-                        ->html('<p>See Twig integration for better HTML integration!</p><br><a href="http://127.0.0.1:8000/mdpCreation/'. $token .'">Modifier mot de passe</a>');
-                    dump($token);
+                        ->html('<p>See Twig integration for better HTML integration!</p><br><a href="http://127.0.0.1:8000/mdpCreation/'. $tokenModification.'">Modifier mot de passe</a>');
+                    //var_dump($token);
                     $mailer->send($email);
 
 
@@ -89,6 +94,7 @@ class VerificationAPIController extends AbstractController
 
                 } catch (\Exception $exception) {
                     $errorMessage = "Identifiants invalides. Veuillez réessayer.";
+                   //dd($exception);
                 }
 
 

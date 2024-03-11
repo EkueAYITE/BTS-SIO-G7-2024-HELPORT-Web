@@ -34,6 +34,9 @@ class Demande
     #[ORM\ManyToOne(inversedBy: 'demandes')]
     private ?Matiere $id_matiere = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string  $Sous_matiere = null;
+
     public function __construct()
     {
         $this->id_user = new ArrayCollection();
@@ -44,12 +47,28 @@ class Demande
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getSousMatiere(): ?string
+    {
+        return $this->Sous_matiere;
+    }
+
+    /**
+     * @param string|null $Sous_matiere
+     */
+    public function setSousMatiere(?string $Sous_matiere): void
+    {
+        $this->Sous_matiere = $Sous_matiere;
+    }
+
     public function getDateUptaded(): ?\DateTimeInterface
     {
         return $this->date_uptaded;
     }
 
-    public function setDateUptaded(\DateTimeInterface $date_uptaded): static
+    public function setDateUpdated(\DateTimeInterface $date_uptaded): static
     {
         $this->date_uptaded = $date_uptaded;
 

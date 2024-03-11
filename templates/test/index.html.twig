@@ -1,54 +1,92 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Confirmation d'envoi de mail</title>
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de mot de passe{% endblock %}
+
+{% block body %}
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Accueil</title>
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    </head>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
             margin: 0;
             padding: 0;
+            background-color: #f1f1f1;
         }
 
         .container {
-            max-width: 500px;
+            width: 80%;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            border-radius: 5px;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
         }
 
-        p {
-            font-size: 18px;
-            text-align: center;
-            margin-top: 20px;
-            color: #333;
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
         }
 
-        a {
-            color: #4CAF50;
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
             text-decoration: none;
+            color: #fff;
         }
 
-        a:hover {
-            text-decoration: underline;
+        main {
+            padding: 20px 0;
         }
 
+        main h2 {
+            font-size: 24px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
     </style>
-</head>
-<body>
-<div class="container">
-    <h1>Confirmation d'inscription !</h1>
-    <p>Un mail vous a été envoyé, veuillez vérifier pour modifier votre mot de passe. Merci de votre inscription !</p>
-    <p><a href="/">Retour à l'accueil</a></p>
-</div>
-</body>
-</html>
+    <body>
+    <header>
+        <div class="container">
+            <h1>Bienvenue sur notre site</h1>
+            <nav>
+                <ul>
+                    <li><a href="">Accueil</a></li>
+                    <li><a href="">À propos</a></li>
+                    <li><a href="">Services</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h2 style="color: blue;">Bienvenue sur notre site</h2>
+            <p>Notre site propose une large gamme de services...</p>
+            <a href="" class="button">Découvrir nos services</a>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p></p>
+        </div>
+    </footer>
+    </body>
+    </html>
+{% endblock %}
