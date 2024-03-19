@@ -25,17 +25,20 @@ class Demande
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
+
     #[ORM\OneToMany(mappedBy: 'demande', targetEntity: User::class)]
     private Collection $id_user;
 
-    #[ORM\ManyToOne(inversedBy: 'id_demande')]
-    private ?Soutien $soutien = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandes')]
     private ?Matiere $id_matiere = null;
 
     #[ORM\Column(length: 255)]
     private ?string  $Sous_matiere = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -54,6 +57,7 @@ class Demande
     {
         return $this->Sous_matiere;
     }
+
 
     /**
      * @param string|null $Sous_matiere
@@ -129,18 +133,6 @@ class Demande
         return $this;
     }
 
-    public function getSoutien(): ?Soutien
-    {
-        return $this->soutien;
-    }
-
-    public function setSoutien(?Soutien $soutien): static
-    {
-        $this->soutien = $soutien;
-
-        return $this;
-    }
-
     public function getIdMatiere(): ?Matiere
     {
         return $this->id_matiere;
@@ -148,8 +140,32 @@ class Demande
 
     public function setIdMatiere(?Matiere $id_matiere): static
     {
+
         $this->id_matiere = $id_matiere;
 
         return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSepareSousMatiere(){
+        // Supprimer les hashtags de la chaîne Sous_matiere
+        $sousMatiereWithoutHashTags = str_replace('#', '', $this->Sous_matiere);
+
+        // Diviser la chaîne en sous-matières en utilisant le caractère #
+        $sousMatiereList = explode('#', $sousMatiereWithoutHashTags);
+
+        // Retourner la liste des sous-matières
+        return $sousMatiereList;
     }
 }

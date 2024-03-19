@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
     {
         
          if ($this->getUser()) {
-             return $this->redirectToRoute('app_connexion');
+             return $this->redirectToRoute('app_accueil');
          }
         // Create a test user
         $testUser = new User();

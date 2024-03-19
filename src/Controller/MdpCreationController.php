@@ -86,7 +86,7 @@ class MdpCreationController extends AbstractController
 
                 // Envoyer un message de confirmation à l'utilisateur
                 $this->addFlash('success', 'Votre mot de passe a été changé avec succès.');
-                return $this->redirectToRoute('app_connexion');
+                return $this->redirectToRoute('app_login');
             }
             else {
                 dump("non valide");

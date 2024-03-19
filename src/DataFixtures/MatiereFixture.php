@@ -34,6 +34,7 @@ class MatiereFixture extends Fixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
+        return 2;
         // TODO: Implement getOrder() method.
     }
 }

@@ -68,6 +68,7 @@ class Matiere
 
     public function getSousMatiere(): ?string
     {
+
         return $this->sous_matiere;
     }
 
@@ -136,5 +137,16 @@ class Matiere
         }
 
         return $this;
+    }
+
+    public function getSousMatieretab()
+    {
+        // Supprimer les hashtags de la chaîne Sous_matiere
+        $sousMatiereWithoutHashTags = str_replace('#', '',$this->sous_matiere );
+
+        // Diviser la chaîne en sous-matières en utilisant le caractère #
+        $sousMatiereList = explode('#', $this->sous_matiere);
+
+        return $sousMatiereList;
     }
 }

@@ -8,7 +8,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Nombre de demandes</th>
+                <th>Matière</th>
                 <th>Date_uptaded</th>
                 <th>Date_fin_demande</th>
                 <th>Statut</th>
@@ -20,9 +21,15 @@
         {% for demande in demandes %}
             <tr>
                 <td>{{ demande.id }}</td>
+                <td>{{ demande.idMatiere.designation }}</td>
                 <td>{{ demande.dateUptaded ? demande.dateUptaded|date('Y-m-d') : '' }}</td>
                 <td>{{ demande.dateFinDemande ? demande.dateFinDemande|date('Y-m-d') : '' }}</td>
-                <td>{{ demande.statut }}</td>
+                <td>{% if demande.statut==0%}
+                        invalide
+                    {% else %}
+                        Validé
+                    {% endif %}
+                </td>
                 <td>{{ demande.SousMatiere }}</td>
                 <td>
                     <a href="{{ path('app_demande_show', {'id': demande.id}) }}">show</a>

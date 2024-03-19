@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Confirmation de mot de passe{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
     <html lang="fr">
@@ -25,7 +25,7 @@
         }
 
         header {
-            background-color: #333;
+            background-color: #54aeff;
             color: #fff;
             padding: 10px 0;
         }
@@ -55,7 +55,7 @@
         }
 
         footer {
-            background-color: #333;
+            background-color: #54aeff;
             color: #fff;
             text-align: center;
             padding: 10px 0;
@@ -87,69 +87,21 @@
 
     </style>
     <body>
-    <header>
-        <div class="container">
-            {% if app.user %}
-                <div class="mb-3" >
-                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-                </div>
-            {% endif %}
-            <h1>Bienvenue sur notre site</h1>
-            <nav>
-                <ul>
-                    <li><a href="">Accueil</a></li>
-                    <li><a href="">À propos</a></li>
-                    <li><a href="">Services</a></li>
-                    <li><a href="">Contact</a></li>
 
-                </ul>
-            </nav>
-        </div>
-    </header>
     <main>
         <div class="container">
             <h2 style="color: blue;">Bienvenue sur HelpOrt</h2>
             <p>Notre site propose une large gamme de services de soutiens entres élèves</p>
 
 
-            <table class="table ">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
+            <a href="{{ path('app_demande_index') }}">back to list</a>
+            <br>
             <a href="{{ path('app_demande_new') }}">Create new</a>
+
 
         </div>
     </main>
-    <footer>
-        <div class="container">
-            <p>  <a href="" class="button" >Découvrir nos services</a> </p>
-        </div>
-    </footer>
+
     </body>
     </html>
 {% endblock %}

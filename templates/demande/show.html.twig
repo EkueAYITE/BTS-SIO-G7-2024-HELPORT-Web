@@ -8,8 +8,8 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ demande.id }}</td>
+                <th>Matière</th>
+                <td>{{ demande.idMatiere.designation }}</td>
             </tr>
             <tr>
                 <th>Date_uptaded</th>
@@ -21,7 +21,12 @@
             </tr>
             <tr>
                 <th>Statut</th>
-                <td>{{ demande.statut }}</td>
+                <td>{% if demande.statut==0%}
+                    invalité
+                    {% else %}
+                    Validé
+                {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Sous_matiere</th>

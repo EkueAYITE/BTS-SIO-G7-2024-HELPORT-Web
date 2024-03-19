@@ -7,7 +7,49 @@
 
     {{ include('demande/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_demande_index') }}">back to list</a>
+    <a href="{{ path('app_demande_index') }}">Revenir à la liste des demandes</a>
 
     {{ include('demande/_delete_form.html.twig') }}
+
+    <script>
+        function getData(){
+            fetch("http://127.0.0.1:8000/matiere/json")
+                .then(response=>response.json())
+                .then(function data(matiere){
+                    let sous_mat = [];
+                    matiere.data.forEach(mat=>{
+                        if (mat.designation ===text ){
+                            sous_mat = mat.sous_matiere.split('#')
+                            sous_mat.shift()
+                        }
+                        tagify.whitelist = sous_mat;
+                    })
+                    console.log(sous_mat)
+
+                    return sous_mat;
+                });
+        }
+        var selectElement = document.querySelector('select[name="demande[id_matiere]"]');
+
+        var text = selectElement.options[selectElement.selectedIndex].text;
+        console.log(selectElement)
+
+        var input = document.querySelector('input[name="demande[SousMatiere]"]'),
+            // init Tagify script on the above inputs
+            tagify = new Tagify(input, {
+                whitelist: [],
+                maxTags: 10,
+                dropdown: {
+                    maxItems: 20,           // <- mixumum allowed rendered suggestions
+                    classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                    enabled: 0,             // <- show suggestions on focus
+                    closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                }
+            })
+        selectElement.addEventListener("change", (event) => {
+            text = selectElement.options[selectElement.selectedIndex].text;
+            getData()
+            console.log(text)
+        })
+    </script>
 {% endblock %}
