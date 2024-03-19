@@ -24,6 +24,7 @@ class AuthenticatorControllerAuthenticator extends AbstractLoginFormAuthenticato
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
+
     }
 
     public function authenticate(Request $request): Passport

@@ -3,13 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Demande;
-use App\Form\Demande1Type;
+use App\Form\DemandeType;
+
 use App\Repository\DemandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 #[Route('/demande')]
 class DemandeController extends AbstractController
@@ -26,10 +28,30 @@ class DemandeController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $demande = new Demande();
-        $form = $this->createForm(Demande1Type::class, $demande);
+        $form = $this->createForm(DemandeType::class, $demande);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $demande->setDateUpdated(new \DateTime());
+            $demande->setStatut("0");
+            $demande->setUser($this->getUser());
+            $jsonData = $demande->getSousMatiere();
+            $dataArray = json_decode($jsonData, true);
+
+// Initialiser une chaîne pour stocker le résultat
+            $resultString = '';
+
+// Parcourir le tableau et concaténer les valeurs avec le format spécifié
+            foreach ($dataArray as $item) {
+                // Extraire la valeur de chaque élément du tableau
+                $value = $item['value'];
+
+                // Concaténer la valeur avec le format spécifié
+                $resultString .= '#' . $value;
+            }
+            $demande->setSousMatiere($resultString);
+
             $entityManager->persist($demande);
             $entityManager->flush();
 
@@ -49,11 +71,11 @@ class DemandeController extends AbstractController
             'demande' => $demande,
         ]);
     }
-
+    //todo : revoir la modification avec le JS pour qu'elle fonctionne corectement
     #[Route('/{id}/edit', name: 'app_demande_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Demande $demande, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(Demande1Type::class, $demande);
+        $form = $this->createForm(DemandeType::class, $demande);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
