@@ -3,6 +3,10 @@
 {% block title %}Edit Demande{% endblock %}
 
 {% block body %}
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
     <h1>Edit Demande</h1>
 
     {{ include('demande/_form.html.twig', {'button_label': 'Update'}) }}
@@ -32,11 +36,13 @@
         var selectElement = document.querySelector('select[name="demande[id_matiere]"]');
 
         var text = selectElement.options[selectElement.selectedIndex].text;
-        console.log(selectElement)
+        console.log(text)
 
         var input = document.querySelector('input[name="demande[SousMatiere]"]'),
+
             // init Tagify script on the above inputs
             tagify = new Tagify(input, {
+                enforceWhitelist : true,
                 whitelist: [],
                 maxTags: 10,
                 dropdown: {
@@ -51,5 +57,6 @@
             getData()
             console.log(text)
         })
+        getData()
     </script>
 {% endblock %}

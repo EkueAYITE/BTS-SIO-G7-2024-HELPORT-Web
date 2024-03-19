@@ -73,11 +73,16 @@ class DemandeController extends AbstractController
     }
     //todo : revoir la modification avec le JS pour qu'elle fonctionne corectement
     #[Route('/{id}/edit', name: 'app_demande_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Demande $demande, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Demande $demande, EntityManagerInterface $entityManager, DemandeRepository $demandeRepository): Response
     {
+
         $form = $this->createForm(DemandeType::class, $demande);
         $form->handleRequest($request);
-
+        $sous_matiere = $demande->getSousMatiere();
+        $sous_matiere= explode("#",$sous_matiere);
+        array_filter($sous_matiere);
+        json_encode($sous_matiere);
+       // dd($sous_matiere);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
@@ -87,6 +92,7 @@ class DemandeController extends AbstractController
         return $this->render('demande/edit.html.twig', [
             'demande' => $demande,
             'form' => $form,
+            'sous_matiere' => $sous_matiere
         ]);
     }
 
