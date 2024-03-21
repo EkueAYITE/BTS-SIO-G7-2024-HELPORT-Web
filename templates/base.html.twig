@@ -8,6 +8,26 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {% block stylesheets %}
         <style>
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                border-radius: 10px;
+                text-decoration: none;
+            }
+
+            .blue-button {
+                background-color: blue;
+                color: white;
+            }
+
+            .user-info {
+                text-align: right;
+                margin-bottom: 20px;
+            }
+
+            .user-greeting {
+                margin-right: 10px;
+            }
 
             body {
                 font-family: Arial, sans-serif;
@@ -91,16 +111,17 @@
     <div class="container">
         {% if app.user %}
             <div class="mb-3">
-                Vous êtes connecté en tant que {{ app.user.nom }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                <p class="user-info">Vous êtes connecté en tant que {{ app.user.nom }}, <a href="{{ path('app_logout') }}" class="button blue-button">Se déconnecter</a></p>
             </div>
         {% endif %}
         <h1>ORT Help</h1>
         <nav>
             <ul  class="tab-name" >
                 <li value="1"><a href="{{ path('app_accueil') }}">Accueil</a></li>
+                <li value="1"><a href="{{ path('app_accueil') }}">Mes demandes</a></li>
                 <li value="2"><a href="{{ path('app_demande_index') }}">Demandes</a></li>
                 <li value="3"><a href="{{ path('app_competence_index') }}">Compétences</a></li>
-                <li value="4"><a href="">Contact</a></li>
+                <li value="4"><a href="">Statistiques</a></li>
             </ul>
         </nav>
     </div>
