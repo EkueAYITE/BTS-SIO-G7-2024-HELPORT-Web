@@ -24,15 +24,15 @@ class Competence
     #[ORM\ManyToOne(inversedBy: 'competences')]
     private ?Matiere $id_matiere = null;
 
-    #[ORM\ManyToMany(targetEntity: Soutien::class, inversedBy: 'id_competence')]
-    private Collection $soutiens;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sousMatiere = null;
 
+    #[ORM\ManyToMany(targetEntity: Soutien::class, mappedBy: 'competence')]
+    private Collection $soutiens;
+
     public function __construct()
     {
-        $this->id_competence = new ArrayCollection();
+
         $this->id_user = new ArrayCollection();
         $this->soutiens = new ArrayCollection();
     }
@@ -53,31 +53,6 @@ class Competence
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Soutien>
-     */
-    public function getIdCompetence(): Collection
-    {
-        return $this->id_competence;
-    }
-
-    public function addIdCompetence(Soutien $idCompetence): static
-    {
-        if (!$this->id_competence->contains($idCompetence)) {
-            $this->id_competence->add($idCompetence);
-        }
-
-        return $this;
-    }
-
-    public function removeIdCompetence(Soutien $idCompetence): static
-    {
-        $this->id_competence->removeElement($idCompetence);
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, User>
      */

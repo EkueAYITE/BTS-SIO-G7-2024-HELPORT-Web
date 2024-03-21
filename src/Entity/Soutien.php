@@ -28,23 +28,19 @@ class Soutien
     #[ORM\Column]
     private ?int $statut = null;
 
-    #[ORM\ManyToMany(targetEntity: Competence::class, mappedBy: 'id_competence')]
-    private Collection $competences;
-
-    #[ORM\OneToMany(mappedBy: 'soutien', targetEntity: Demande::class)]
-    private Collection $id_demande;
-
     #[ORM\ManyToOne(inversedBy: 'soutiens')]
     private ?Salle $id_salle = null;
 
-    #[ORM\ManyToMany(targetEntity: Competence::class, mappedBy: 'soutiens')]
-    private Collection $id_competence;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Demande $demande = null;
+
+    #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'soutiens')]
+    private Collection $competence;
 
     public function __construct()
     {
-        $this->competences = new ArrayCollection();
-        $this->id_demande = new ArrayCollection();
-        $this->id_competence = new ArrayCollection();
+        $this->competence = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,6 +190,26 @@ class Soutien
         }
 
         return $this;
+    }
+
+    public function getDemande(): ?Matiere
+    {
+        return $this->demande;
+    }
+
+    public function setDemande(Matiere $demande): static
+    {
+        $this->demande = $demande;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetence(): Collection
+    {
+        return $this->competence;
     }
 
 }

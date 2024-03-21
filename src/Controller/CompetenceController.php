@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Competence;
+use App\Entity\User;
 use App\Form\CompetenceType;
 use App\Repository\CompetenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,8 +18,13 @@ class CompetenceController extends AbstractController
     #[Route('/', name: 'app_competence_index', methods: ['GET'])]
     public function index(CompetenceRepository $competenceRepository): Response
     {
+
+        $user = $this->getUser();
+       // dd($user->getId());
+
+
         return $this->render('competence/index.html.twig', [
-            'competences' => $competenceRepository->findAll(),
+            'competences' => $competenceRepository->getCompetenceByUser($user),
         ]);
     }
 
