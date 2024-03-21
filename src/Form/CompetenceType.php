@@ -16,21 +16,15 @@ class CompetenceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('statut')
-            ->add('id_competence', EntityType::class, [
-                'class' => Soutien::class,
-'choice_label' => 'id',
-'multiple' => true,
-            ])
-            ->add('id_user', EntityType::class, [
-                'class' => User::class,
-'choice_label' => 'id',
-'multiple' => true,
-            ])
+
             ->add('id_matiere', EntityType::class, [
                 'class' => Matiere::class,
-'choice_label' => 'id',
+                'choice_label' => 'designation',
             ])
+
+            ->add('sousMatiere')
+
+
         ;
     }
 

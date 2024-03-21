@@ -37,10 +37,14 @@ class Soutien
     #[ORM\ManyToOne(inversedBy: 'soutiens')]
     private ?Salle $id_salle = null;
 
+    #[ORM\ManyToMany(targetEntity: Competence::class, mappedBy: 'soutiens')]
+    private Collection $id_competence;
+
     public function __construct()
     {
         $this->competences = new ArrayCollection();
         $this->id_demande = new ArrayCollection();
+        $this->id_competence = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -161,6 +165,33 @@ class Soutien
     public function setIdSalle(?Salle $id_salle): static
     {
         $this->id_salle = $id_salle;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getIdCompetence(): Collection
+    {
+        return $this->id_competence;
+    }
+
+    public function addIdCompetence(Competence $idCompetence): static
+    {
+        if (!$this->id_competence->contains($idCompetence)) {
+            $this->id_competence->add($idCompetence);
+            $idCompetence->addSoutien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdCompetence(Competence $idCompetence): static
+    {
+        if ($this->id_competence->removeElement($idCompetence)) {
+            $idCompetence->removeSoutien($this);
+        }
 
         return $this;
     }

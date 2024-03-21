@@ -3,11 +3,60 @@
 {% block title %}Edit Competence{% endblock %}
 
 {% block body %}
-    <h1>Edit Competence</h1>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
+    <h1>Modifer mes competence</h1>
 
     {{ include('competence/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_competence_index') }}">back to list</a>
+    <a href="{{ path('app_competence_index') }}">Revenir a la liste des demandes</a>
 
     {{ include('competence/_delete_form.html.twig') }}
+
+    <script>
+        function getData(){
+            fetch("http://127.0.0.1:8000/matiere/json")
+                .then(response=>response.json())
+                .then(function data(matiere){
+                    let sous_mat = [];
+                    matiere.data.forEach(mat=>{
+                        if (mat.designation ===text ){
+                            sous_mat = mat.sous_matiere.split('#')
+                            sous_mat.shift()
+                        }
+                        tagify.whitelist = sous_mat;
+                    })
+                    console.log(sous_mat)
+
+                    return sous_mat;
+                });
+        }
+        var selectElement = document.querySelector('select[name="competence[id_matiere]"]');
+
+        var text = selectElement.options[selectElement.selectedIndex].text;
+        console.log(text)
+
+        var input = document.querySelector('input[name="competence[sousMatiere]"]'),
+
+            // init Tagify script on the above inputs
+            tagify = new Tagify(input, {
+                enforceWhitelist : true,
+                whitelist: [],
+                maxTags: 10,
+                dropdown: {
+                    maxItems: 20,           // <- mixumum allowed rendered suggestions
+                    classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                    enabled: 0,             // <- show suggestions on focus
+                    closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                }
+            })
+        selectElement.addEventListener("change", (event) => {
+            text = selectElement.options[selectElement.selectedIndex].text;
+            getData()
+            console.log(text)
+        })
+        getData()
+    </script>
 {% endblock %}

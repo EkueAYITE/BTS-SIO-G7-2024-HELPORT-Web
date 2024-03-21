@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Statut</th>
+                <th>SousMatiere</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,6 +19,7 @@
             <tr>
                 <td>{{ competence.id }}</td>
                 <td>{{ competence.statut }}</td>
+                <td>{{ competence.sousMatiere }}</td>
                 <td>
                     <a href="{{ path('app_competence_show', {'id': competence.id}) }}">show</a>
                     <a href="{{ path('app_competence_edit', {'id': competence.id}) }}">edit</a>
@@ -25,7 +27,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

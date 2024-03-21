@@ -1,13 +1,5 @@
 {{ form_start(form) }}
 
-<select name="{{ field_name(form.id_matiere) }}" class="form-control">
-    <option value="">{{ field_label(form.id_matiere) }}</option>
-
-    {% for label, value in field_choices(form.id_matiere) %}
-        <option value="{{ value }}">{{ label }}</option>
-    {% endfor %}
-</select>
-{{ form_row(form.SousMatiere) }}
-{{ form_row(form.date_fin_demande) }}
+{{ form_widget(form) }}
 <button class="btn btn-lg btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

@@ -73,12 +73,32 @@ class DemandeController extends AbstractController
     }
     //todo : revoir la modification avec le JS pour qu'elle fonctionne corectement
     #[Route('/{id}/edit', name: 'app_demande_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Demande $demande, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Demande $demande, EntityManagerInterface $entityManager, DemandeRepository $demandeRepository): Response
     {
+
         $form = $this->createForm(DemandeType::class, $demande);
         $form->handleRequest($request);
-
+        $sous_matiere = $demande->getSousMatiere();
+        $sous_matiere= explode("#",$sous_matiere);
+        array_filter($sous_matiere);
+        json_encode($sous_matiere);
+       // dd($sous_matiere);
         if ($form->isSubmitted() && $form->isValid()) {
+            $jsonData = $demande->getSousMatiere();
+            $dataArray = json_decode($jsonData, true);
+
+// Initialiser une chaîne pour stocker le résultat
+            $resultString = '';
+
+// Parcourir le tableau et concaténer les valeurs avec le format spécifié
+            foreach ($dataArray as $item) {
+                // Extraire la valeur de chaque élément du tableau
+                $value = $item['value'];
+
+                // Concaténer la valeur avec le format spécifié
+                $resultString .= '#' . $value;
+            }
+            $demande->setSousMatiere($resultString);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_demande_index', [], Response::HTTP_SEE_OTHER);
@@ -87,6 +107,7 @@ class DemandeController extends AbstractController
         return $this->render('demande/edit.html.twig', [
             'demande' => $demande,
             'form' => $form,
+            'sous_matiere' => $sous_matiere
         ]);
     }
 

@@ -30,8 +30,23 @@ class CompetenceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $competence->addIdUser($this->getUser());
+            $competence->setStatut(0);
+             $jsonData = $competence->getSousMatiere();
+             $dataArray = json_decode($jsonData,true);
+
+            $resultString = '';
+            foreach ($dataArray as $item) {
+                // Extraire la valeur de chaque élément du tableau
+                $value = $item['value'];
+
+                // Concaténer la valeur avec le format spécifié
+                $resultString .= '#' . $value;
+            }
+            $competence->setSousMatiere($resultString);
             $entityManager->persist($competence);
             $entityManager->flush();
+
 
             return $this->redirectToRoute('app_competence_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -55,8 +70,27 @@ class CompetenceController extends AbstractController
     {
         $form = $this->createForm(CompetenceType::class, $competence);
         $form->handleRequest($request);
+        $sous_matiere = $competence->getSousMatiere();
+        $sous_matiere= explode("#",$sous_matiere);
+        array_filter($sous_matiere);
+        json_encode($sous_matiere);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $jsonData = $competence->getSousMatiere();
+            $dataArray = json_decode($jsonData,true);
+
+            // Initialiser une chaîne pour stocker le résultat
+            $resultString = '';
+
+
+            foreach ($dataArray as $item) {
+                // Extraire la valeur de chaque élément du tableau
+                $value = $item['value'];
+
+                // Concaténer la valeur avec le format spécifié
+                $resultString .= '#' . $value;
+            }
+            $competence->setSousMatiere($resultString);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_competence_index', [], Response::HTTP_SEE_OTHER);
@@ -65,6 +99,7 @@ class CompetenceController extends AbstractController
         return $this->render('competence/edit.html.twig', [
             'competence' => $competence,
             'form' => $form,
+            'sous_matiere'=>$sous_matiere
         ]);
     }
 
