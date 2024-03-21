@@ -84,6 +84,21 @@ class DemandeController extends AbstractController
         json_encode($sous_matiere);
        // dd($sous_matiere);
         if ($form->isSubmitted() && $form->isValid()) {
+            $jsonData = $demande->getSousMatiere();
+            $dataArray = json_decode($jsonData, true);
+
+// Initialiser une chaîne pour stocker le résultat
+            $resultString = '';
+
+// Parcourir le tableau et concaténer les valeurs avec le format spécifié
+            foreach ($dataArray as $item) {
+                // Extraire la valeur de chaque élément du tableau
+                $value = $item['value'];
+
+                // Concaténer la valeur avec le format spécifié
+                $resultString .= '#' . $value;
+            }
+            $demande->setSousMatiere($resultString);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_demande_index', [], Response::HTTP_SEE_OTHER);

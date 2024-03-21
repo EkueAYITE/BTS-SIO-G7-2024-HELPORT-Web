@@ -1,19 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Competence{% endblock %}
+{% block title %}New Competence{% endblock %}
 
 {% block body %}
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <h1>Create new Competence</h1>
 
-    <h1>Modifer mes competence</h1>
+    {{ include('competence/_form.html.twig') }}
 
-    {{ include('competence/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_competence_index') }}">Revenir a la liste des demandes</a>
-
-    {{ include('competence/_delete_form.html.twig') }}
+    <a href="{{ path('app_competence_index') }}">back to list</a>
 
     <script>
         function getData(){
@@ -36,13 +33,12 @@
         var selectElement = document.querySelector('select[name="competence[id_matiere]"]');
 
         var text = selectElement.options[selectElement.selectedIndex].text;
-        console.log(text)
+      //  console.log(selectElement)
 
-        var input = document.querySelector('input[name="competence[sousMatiere]"]'),
-
+        var input = document.querySelector('input[name="competence[sousMatiere]"]')
+            console.log(input)
             // init Tagify script on the above inputs
             tagify = new Tagify(input, {
-                enforceWhitelist : true,
                 whitelist: [],
                 maxTags: 10,
                 dropdown: {
@@ -57,6 +53,5 @@
             getData()
             console.log(text)
         })
-        getData()
     </script>
 {% endblock %}
