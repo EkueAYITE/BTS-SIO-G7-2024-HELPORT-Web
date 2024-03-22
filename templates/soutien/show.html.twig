@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Soutien{% endblock %}
+
+{% block body %}
+    <h1>Soutien </h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ soutien.id }}</td>
+            </tr>
+            <tr>
+                <th>Date_du_soutien</th>
+                <td>{{ soutien.dateDuSoutien ? soutien.dateDuSoutien|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_update</th>
+                <td>{{ soutien.dateUpdate ? soutien.dateUpdate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ soutien.description }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ soutien.statut }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_soutien_index') }}">back to list</a>
+
+    <a href="{{ path('app_soutien_edit', {'id': soutien.id}) }}">edit</a>
+
+    {{ include('soutien/_delete_form.html.twig') }}
+{% endblock %}

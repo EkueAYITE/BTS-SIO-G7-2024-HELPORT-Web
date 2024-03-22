@@ -30,11 +30,13 @@ class Competence
     #[ORM\ManyToMany(targetEntity: Soutien::class, mappedBy: 'competence')]
     private Collection $soutiens;
 
+
     public function __construct()
     {
 
         $this->id_user = new ArrayCollection();
         $this->soutiens = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -89,29 +91,6 @@ class Competence
         return $this;
     }
 
-    /**
-     * @return Collection<int, Soutien>
-     */
-    public function getSoutiens(): Collection
-    {
-        return $this->soutiens;
-    }
-
-    public function addSoutien(Soutien $soutien): static
-    {
-        if (!$this->soutiens->contains($soutien)) {
-            $this->soutiens->add($soutien);
-        }
-
-        return $this;
-    }
-
-    public function removeSoutien(Soutien $soutien): static
-    {
-        $this->soutiens->removeElement($soutien);
-
-        return $this;
-    }
 
     public function getSouMatiere(): ?string
     {
@@ -133,6 +112,33 @@ class Competence
     public function setSousMatiere(?string $sousMatiere): static
     {
         $this->sousMatiere = $sousMatiere;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Soutien>
+     */
+    public function getSoutiens(): Collection
+    {
+        return $this->soutiens;
+    }
+
+    public function addSoutien(Soutien $soutien): static
+    {
+        if (!$this->soutiens->contains($soutien)) {
+            $this->soutiens->add($soutien);
+            $soutien->addCompetence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoutien(Soutien $soutien): static
+    {
+        if ($this->soutiens->removeElement($soutien)) {
+            $soutien->removeCompetence($this);
+        }
 
         return $this;
     }

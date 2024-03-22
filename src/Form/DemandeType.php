@@ -23,6 +23,7 @@ class DemandeType extends AbstractType
                 'choice_label' => fn(Matiere $matiere): string => $matiere->getDesignation(),
                 'placeholder' => 'Choisir une matière',
             ])
+            ->add('SousMatiere')
 
         ;
     }

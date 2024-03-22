@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Soutien index{% endblock %}
+
+{% block body %}
+    <h1>Soutien index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date_du_soutien</th>
+                <th>Date_update</th>
+                <th>Description</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for soutien in soutiens %}
+            <tr>
+                <td>{{ soutien.id }}</td>
+                <td>{{ soutien.dateDuSoutien ? soutien.dateDuSoutien|date('Y-m-d') : '' }}</td>
+                <td>{{ soutien.dateUpdate ? soutien.dateUpdate|date('Y-m-d') : '' }}</td>
+                <td>{{ soutien.description }}</td>
+                <td>{{ soutien.statut }}</td>
+                <td>
+                    <a href="{{ path('app_soutien_show', {'id': soutien.id}) }}">show</a>
+                    <a href="{{ path('app_soutien_edit', {'id': soutien.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
