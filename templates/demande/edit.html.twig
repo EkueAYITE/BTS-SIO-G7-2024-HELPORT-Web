@@ -7,11 +7,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
-    <h1>Modifer ma demande</h1>
+    <h1>Modifier ma demande</h1>
 
-    {{ include('demande/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('demande/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    <br>
 
-    <a href="{{ path('app_demande_index') }}">Revenir à la liste des demandes</a>
+    <a href="{{ path('app_demande_index') }}" class="button blue-button">Revenir à la liste des demandes</a>
 
     {{ include('demande/_delete_form.html.twig') }}
 

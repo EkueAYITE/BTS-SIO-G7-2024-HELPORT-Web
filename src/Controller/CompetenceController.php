@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Doctrine\StaticAnalysis\Tools\Pagination\test;
 
 #[Route('/competence')]
 class CompetenceController extends AbstractController
@@ -21,7 +22,6 @@ class CompetenceController extends AbstractController
 
         $user = $this->getUser();
        // dd($user->getId());
-
 
         return $this->render('competence/index.html.twig', [
             'competences' => $competenceRepository->getCompetenceByUser($user),

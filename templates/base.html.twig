@@ -8,6 +8,26 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {% block stylesheets %}
         <style>
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                border-radius: 10px;
+                text-decoration: none;
+            }
+
+            .blue-button {
+                background-color: #087cf3;
+                color: white;
+            }
+
+            .user-info {
+                text-align: right;
+                margin-bottom: 20px;
+            }
+
+            .user-greeting {
+                margin-right: 10px;
+            }
 
             body {
                 font-family: Arial, sans-serif;
@@ -33,7 +53,7 @@
             }
 
             header {
-                background-color: #54aeff;
+                background-color: #0084ff;
                 color: #fff;
                 padding: 10px 0;
             }
@@ -64,7 +84,7 @@
             }
 
             footer {
-                background-color: #54aeff;
+                background-color: #0086ff;
                 color: #fff;
                 text-align: center;
                 padding: 10px 0;
@@ -72,7 +92,7 @@
 
             /* Styles spécifiques pour le header et le footer */
             header, footer {
-                background-color: #54aeff;
+                background-color: #087cf3;
                 color: #fff;
                 padding: 10px 0;
                 text-align: center; /* Centrer le texte dans le header et le footer */
@@ -81,6 +101,12 @@
                 border-radius: 10px; /* Vous pouvez ajuster cette valeur pour obtenir l'arrondi désiré */
                 padding: 10px 0; /* Ajoutez le padding si nécessaire */
             }
+            .logo {
+                float: left;
+                margin-right: 20px;
+                margin-left: -275px; /* Ajustement de la marge pour déplacer l'image plus à gauche */
+            }
+
         </style>
     {% endblock %}
     {% block javascripts %}
@@ -90,18 +116,19 @@
 <header class="element-arrondi">
     <div class="container">
         {% if app.user %}
+            <img class="logo" src="{{ asset ('img/ORTMONTREUILLOGOsansfond.png')}}">
             <div class="mb-3">
-                Vous êtes connecté en tant que {{ app.user.nom }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                <p class="user-info">Vous êtes connecté en tant que {{ app.user.nom }}, <a href="{{ path('app_logout') }}" class="button blue-button">Se déconnecter</a></p>
             </div>
         {% endif %}
         <h1>ORT Help</h1>
         <nav>
             <ul  class="tab-name" >
                 <li value="1"><a href="{{ path('app_accueil') }}">Accueil</a></li>
+                <li value="1"><a href="{{ path('app_mes_demandes') }}">Mes demandes</a></li>
                 <li value="2"><a href="{{ path('app_demande_index') }}">Demandes</a></li>
                 <li value="3"><a href="{{ path('app_competence_index') }}">Compétences</a></li>
-                <li value="3"><a href="{{ path('app_soutien_index') }}">Soutien</a></li>
-                <li value="4"><a href="">Contact</a></li>
+                <li value="4"><a href="">Statistiques</a></li>
             </ul>
         </nav>
     </div>
@@ -113,7 +140,7 @@
 
 <footer class="element-arrondi">
     <div class="container2">
-        <p><a href="" class="button">Découvrir nos services</a></p>
+        <p><a href="" class="button" style="color: white">ORTHELP | 43 Rue Raspail, 93100 Montreuil</a></p>
     </div>
 </footer>
 
