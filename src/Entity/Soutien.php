@@ -20,16 +20,13 @@ class Soutien
     private ?\DateTimeInterface $date_du_soutien = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_update = null;
+    private ?\DateTimeInterface $date_updated = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?int $statut = null;
-
-    #[ORM\ManyToOne(inversedBy: 'soutiens')]
-    private ?Salle $id_salle = null;
+    private ?int $status = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -37,6 +34,10 @@ class Soutien
 
     #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'soutiens')]
     private Collection $competence;
+
+    #[ORM\ManyToOne(inversedBy: 'soutiens')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -60,14 +61,14 @@ class Soutien
         return $this;
     }
 
-    public function getDateUpdate(): ?\DateTimeInterface
+    public function getDateUpdated(): ?\DateTimeInterface
     {
-        return $this->date_update;
+        return $this->date_updated;
     }
 
-    public function setDateUpdate(\DateTimeInterface $date_update): static
+    public function setDateUpdated(\DateTimeInterface $date_updated): static
     {
-        $this->date_update = $date_update;
+        $this->date_updated = $date_updated;
 
         return $this;
     }
@@ -77,127 +78,31 @@ class Soutien
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getStatut(): ?int
+    public function getStatus(): ?int
     {
-        return $this->statut;
+        return $this->status;
     }
 
-    public function setStatut(int $statut): static
+    public function setStatus(int $status): static
     {
-        $this->statut = $statut;
+        $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Competence>
-     */
-    public function getCompetences(): Collection
-    {
-        return $this->competences;
-    }
-
-    public function addCompetence(Competence $competence): static
-    {
-        if (!$this->competences->contains($competence)) {
-            $this->competences->add($competence);
-            $competence->addIdCompetence($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompetence(Competence $competence): static
-    {
-        if ($this->competences->removeElement($competence)) {
-            $competence->removeIdCompetence($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Demande>
-     */
-    public function getIdDemande(): Collection
-    {
-        return $this->id_demande;
-    }
-
-    public function addIdDemande(Demande $idDemande): static
-    {
-        if (!$this->id_demande->contains($idDemande)) {
-            $this->id_demande->add($idDemande);
-            $idDemande->setSoutien($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdDemande(Demande $idDemande): static
-    {
-        if ($this->id_demande->removeElement($idDemande)) {
-            // set the owning side to null (unless already changed)
-            if ($idDemande->getSoutien() === $this) {
-                $idDemande->setSoutien(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getIdSalle(): ?Salle
-    {
-        return $this->id_salle;
-    }
-
-    public function setIdSalle(?Salle $id_salle): static
-    {
-        $this->id_salle = $id_salle;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Competence>
-     */
-    public function getIdCompetence(): Collection
-    {
-        return $this->id_competence;
-    }
-
-    public function addIdCompetence(Competence $idCompetence): static
-    {
-        if (!$this->id_competence->contains($idCompetence)) {
-            $this->id_competence->add($idCompetence);
-            $idCompetence->addSoutien($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdCompetence(Competence $idCompetence): static
-    {
-        if ($this->id_competence->removeElement($idCompetence)) {
-            $idCompetence->removeSoutien($this);
-        }
-
-        return $this;
-    }
-
-    public function getDemande(): ?Matiere
+    public function getDemande(): ?Demande
     {
         return $this->demande;
     }
 
-    public function setDemande(Matiere $demande): static
+    public function setDemande(Demande $demande): static
     {
         $this->demande = $demande;
 
@@ -212,4 +117,31 @@ class Soutien
         return $this->competence;
     }
 
+    public function addCompetence(Competence $competence): static
+    {
+        if (!$this->competence->contains($competence)) {
+            $this->competence->add($competence);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competence $competence): static
+    {
+        $this->competence->removeElement($competence);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

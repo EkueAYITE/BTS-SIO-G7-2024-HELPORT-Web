@@ -50,9 +50,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'id_user')]
     private ?Demande $demande = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Soutien::class, orphanRemoval: true)]
+    private Collection $soutiens;
+
     public function __construct()
     {
         $this->competences = new ArrayCollection();
+        $this->soutiens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -220,6 +224,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDemande(?Demande $demande): static
     {
         $this->demande = $demande;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Soutien>
+     */
+    public function getSoutiens(): Collection
+    {
+        return $this->soutiens;
+    }
+
+    public function addSoutien(Soutien $soutien): static
+    {
+        if (!$this->soutiens->contains($soutien)) {
+            $this->soutiens->add($soutien);
+            $soutien->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoutien(Soutien $soutien): static
+    {
+        if ($this->soutiens->removeElement($soutien)) {
+            // set the owning side to null (unless already changed)
+            if ($soutien->getUser() === $this) {
+                $soutien->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -18,6 +18,11 @@
             </tr>
         </thead>
         <tbody>
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
         {% for demande in demandes %}
             <tr>
                 <td>{{ demande.id }}</td>
@@ -34,6 +39,7 @@
                 <td>
                     <a href="{{ path('app_demande_show', {'id': demande.id}) }}">show</a>
                     <a href="{{ path('app_demande_edit', {'id': demande.id}) }}">edit</a>
+                    <a href="{{ path('app_soutien_new',{'id': demande.id}) }}">Accepter la demande</a>
                 </td>
             </tr>
         {% else %}

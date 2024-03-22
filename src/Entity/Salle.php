@@ -21,8 +21,7 @@ class Salle
     #[ORM\Column]
     private ?int $etage = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_salle', targetEntity: Soutien::class)]
-    private Collection $soutiens;
+
 
     public function __construct()
     {
@@ -58,33 +57,6 @@ class Salle
         return $this;
     }
 
-    /**
-     * @return Collection<int, Soutien>
-     */
-    public function getSoutiens(): Collection
-    {
-        return $this->soutiens;
-    }
 
-    public function addSoutien(Soutien $soutien): static
-    {
-        if (!$this->soutiens->contains($soutien)) {
-            $this->soutiens->add($soutien);
-            $soutien->setIdSalle($this);
-        }
 
-        return $this;
-    }
-
-    public function removeSoutien(Soutien $soutien): static
-    {
-        if ($this->soutiens->removeElement($soutien)) {
-            // set the owning side to null (unless already changed)
-            if ($soutien->getIdSalle() === $this) {
-                $soutien->setIdSalle(null);
-            }
-        }
-
-        return $this;
-    }
 }
