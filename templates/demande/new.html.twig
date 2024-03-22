@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Demande{% endblock %}
+{% block title %}Nouvelle Demande{% endblock %}
 
 {% block body %}
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-    <h1>Créé une nouvelle Demande</h1>
+    <h1>Créer une nouvelle Demande</h1>
 
     <div class="container">
 
@@ -14,7 +14,7 @@
 
     </div>
 
-    <a href="{{ path('app_demande_index') }}">Revenir à la liste des demandes</a>
+    <a href="{{ path('app_demande_index') }}" class="button blue-button">Revenir à la liste des demandes</a>
     <script>
         function getData(){
             fetch("http://127.0.0.1:8000/matiere/json")

@@ -25,7 +25,7 @@ class DemandeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_demande_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+        public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $demande = new Demande();
         $form = $this->createForm(DemandeType::class, $demande);

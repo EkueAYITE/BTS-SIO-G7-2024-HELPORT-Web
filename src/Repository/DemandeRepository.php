@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Demande;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,27 @@ class DemandeRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Demande::class);
+    }
+    public function getDemandesByUser(User $user)
+    {
+        $qb = $this->createQueryBuilder("d")
+            ->where('d.user = :user')
+            ->setParameter('user', $user);
+
+        return $qb->getQuery()->getResult();
+    }
+    public function findDemandeByUserId($userId)
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        // Construire la requête
+        $qb->select('d')
+            ->innerJoin('d.user', 'cu')
+            ->where('cu.id = :userId')
+            ->setParameter('userId', $userId);
+
+        return $qb->getQuery()->getResult();
+
     }
 
 //    /**
