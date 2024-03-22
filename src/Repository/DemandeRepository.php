@@ -29,6 +29,27 @@ class DemandeRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+    public function getDemandesByMatiere()
+    {
+        return $this->createQueryBuilder('d')
+            ->select('m.designation AS matiere, COUNT(d.id) AS nombre_demandes, SUM(CASE WHEN d.statut = 1 THEN 1 ELSE 0 END) AS nombre_demandes_validated')
+            ->leftJoin('d.id_matiere', 'm')
+            ->groupBy('m.designation')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getValidatedDemandesByMatiere()
+    {
+        return $this->createQueryBuilder('d')
+            ->select('m.designation AS matiere, COUNT(d.id) AS nombre_demandes_validated')
+            ->leftJoin('d.matiere', 'm')
+            ->where('d.status = 1') // Suppose que 1 représente le statut des demandes validées
+            ->groupBy('m.designation')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function findDemandeByUserId($userId)
     {
         $qb = $this->createQueryBuilder('d');
