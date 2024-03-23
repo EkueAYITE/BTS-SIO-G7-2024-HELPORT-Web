@@ -21,7 +21,7 @@ class CompetenceController extends AbstractController
     {
 
         $user = $this->getUser();
-       // dd($user->getId());
+       //  dd($user->getId());
 
         return $this->render('competence/index.html.twig', [
             'competences' => $competenceRepository->getCompetenceByUser($user),

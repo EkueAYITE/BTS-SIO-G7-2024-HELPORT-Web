@@ -20,7 +20,7 @@ class Soutien
     private ?\DateTimeInterface $date_du_soutien = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_updated = null;
+    private ?\DateTimeInterface $date_update = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -34,10 +34,6 @@ class Soutien
 
     #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'soutiens')]
     private Collection $competence;
-
-    #[ORM\ManyToOne(inversedBy: 'soutiens')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
 
     public function __construct()
     {
@@ -61,14 +57,14 @@ class Soutien
         return $this;
     }
 
-    public function getDateUpdated(): ?\DateTimeInterface
+    public function getDateUpdate(): ?\DateTimeInterface
     {
-        return $this->date_updated;
+        return $this->date_update;
     }
 
-    public function setDateUpdated(\DateTimeInterface $date_updated): static
+    public function setDateUpdate(\DateTimeInterface $date_update): static
     {
-        $this->date_updated = $date_updated;
+        $this->date_update = $date_update;
 
         return $this;
     }
@@ -129,18 +125,6 @@ class Soutien
     public function removeCompetence(Competence $competence): static
     {
         $this->competence->removeElement($competence);
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
 
         return $this;
     }

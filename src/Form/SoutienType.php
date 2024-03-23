@@ -18,6 +18,7 @@ class SoutienType extends AbstractType
         $builder
 
             ->add('description')
+            ->add('date_du_soutien')
         ;
     }
 

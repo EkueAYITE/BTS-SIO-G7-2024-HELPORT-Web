@@ -14,6 +14,7 @@
             <th>Date de fin</th>
             <th>Statut</th>
             <th>Sous-matières</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -30,6 +31,8 @@
                     {% endif %}
                 </td>
                 <td>{{ demande.SousMatiere }}</td>
+                <td>
+                    <a href="{{ path('app_demande_edit', {'id': demande.id}) }}" class="button blue-button">Éditer</a></td>
 
             </tr>
         {% else %}

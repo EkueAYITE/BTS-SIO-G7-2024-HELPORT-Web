@@ -39,27 +39,41 @@ class SoutienController extends AbstractController
         $user = $this->getUser();
         $niveau  = $user->getNiveau();
         // dd($niveau);
-       // $niveauEtudiant = 0;
-        $niveauEtudiant = $this->getI($niveau);
-
-        $niveauD = $demande->getUser()->getNiveau();
-        $niveauDemande = $this->getI($niveauD);
-        //dd($niveauDemande);
-        if($niveauDemande >= $niveauEtudiant){
-            $this->addFlash('error', 'Votre niveau ne conviens pas a ce soutient');
-
-            return $this->redirectToRoute('app_demande_index');
+        $niveauEtudiant = 0;
+        if($niveau =="1 TS SIO A" or $niveau =="1 TS SIO B" or $niveau =="1 TS SIO - année alternance" or $niveau =="Manager Solutions Digitals et Data 1ème - année alternance"){
+            $niveauEtudiant =1;
+        }elseif ($niveau=="2TS SIO SLAM" or $niveau=="2TS SIO SISR" or $niveau =="2TS SIO SLAM - année alternance" or $niveau =="2TS SIO SISR - année alternance" or $niveau=="Manager Solutions Digitals et Data 2ème - année alternance" ){
+            $niveauEtudiant =2;
+        }elseif ($niveau=="Bachelor CSI - année alternance"){
+            $niveauEtudiant =3;
         }
 
-
+        $niveauD = $demande->getUser()->getNiveau();
+        $niveauDemande = 0;
+        if($niveauD =="1 TS SIO A" or $niveauD =="1 TS SIO B" or $niveauD =="1 TS SIO - année alternance" or $niveauD =="Manager Solutions Digitals et Data 1ème - année alternance"){
+            $niveauDemande =1;
+        }elseif ($niveauD=="2TS SIO SLAM" or $niveauD=="2TS SIO SISR" or $niveauD =="2TS SIO SLAM - année alternance" or $niveauD =="2TS SIO SISR - année alternance" or $niveauD=="Manager Solutions Digitals et Data 2ème - année alternance" ){
+            $niveauDemande =2;
+        }elseif ($niveauD=="Bachelor CSI - année alternance"){
+            $niveauDemande =3;
+        }
+       //dd($niveauDemande);
+        if($niveauDemande >= $niveauEtudiant){
+            $this->addFlash('success', 'Votre niveau ne conviens pas a ce soutient');
+            return $this->redirectToRoute('app_demande_index', [], Response::HTTP_SEE_OTHER);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
           //  dd($soutien);
+            $soutien->setDateUpdate(new \DateTime());
+            $soutien->setStatus("0");
+            //dd($soutien);
             $entityManager->persist($soutien);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_soutien_index', [], Response::HTTP_SEE_OTHER);
-        }
+            }
+
 
 
         return $this->render('soutien/new.html.twig', [
@@ -104,22 +118,5 @@ class SoutienController extends AbstractController
         }
 
         return $this->redirectToRoute('app_soutien_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    /**
-     * @param string|null $niveauD
-     * @param $niveau
-     * @return int
-     */
-    public function getI(?string $niveau): int
-    {
-        if ($niveau == "1 TS SIO A" or $niveau == "1 TS SIO B" or $niveau == "1 TS SIO - année alternance" or $niveau == "Manager Solutions Digitals et Data 1ème - année alternance") {
-            $codeNiveau = 1;
-        } elseif ($niveau == "2TS SIO SLAM" or $niveau == "2TS SIO SISR" or $niveau == "2TS SIO SLAM - année alternance" or $niveau == "2TS SIO SISR - année alternance" or $niveau == "Manager Solutions Digitals et Data 2ème - année alternance") {
-            $codeNiveau = 2;
-        } elseif ($niveau == "Bachelor CSI - année alternance") {
-            $codeNiveau = 3;
-        }
-        return $codeNiveau;
     }
 }

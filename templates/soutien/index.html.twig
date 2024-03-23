@@ -13,7 +13,6 @@
                 <th>Date_update</th>
                 <th>Description</th>
                 <th>Statut</th>
-                <th>actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,11 +22,8 @@
                 <td>{{ soutien.dateDuSoutien ? soutien.dateDuSoutien|date('Y-m-d') : '' }}</td>
                 <td>{{ soutien.dateUpdate ? soutien.dateUpdate|date('Y-m-d') : '' }}</td>
                 <td>{{ soutien.description }}</td>
-                <td>{{ soutien.statut }}</td>
-                <td>
-                    <a href="{{ path('app_soutien_show', {'id': soutien.id}) }}">show</a>
-                    <a href="{{ path('app_soutien_edit', {'id': soutien.id}) }}">edit</a>
-                </td>
+                <td>{{ soutien.status }}</td>
+
             </tr>
         {% else %}
             <tr>
