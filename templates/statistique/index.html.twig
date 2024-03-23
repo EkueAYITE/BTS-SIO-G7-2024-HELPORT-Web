@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StatistiqueController!{% endblock %}
+
+{% block body %}
+    <div style="display: flex; justify-content: space-between;">
+        <div id="chart_div_validated" style="width: 30%; height: 500px;"></div>
+        <div id="chart_div_total" style="width: 30%; height: 500px;"></div>
+        <div id="chart_div_donut" style="width: 30%; height: 500px;"></div>
+    </div>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            // Drawing Validated Requests Histogram
+            var dataValidated = google.visualization.arrayToDataTable([
+                ['Matière', 'Demandes Validées'],
+                {% for demande in demandes %}
+                ['{{ demande.matiere }}', {{ demande.nombre_demandes_validated }}],
+                {% endfor %}
+            ]);
+
+            var optionsValidated = {
+                title: 'Nombre de demandes validées par matière',
+                bars: 'vertical'
+            };
+
+            var chartValidated = new google.visualization.ColumnChart(document.getElementById('chart_div_validated'));
+            chartValidated.draw(dataValidated, optionsValidated);
+
+            // Drawing Total Requests Bar Chart
+            var dataTotal = google.visualization.arrayToDataTable([
+                ['Matière', 'Nombre de demandes'],
+                {% for demande in demandes %}
+                ['{{ demande.matiere }}', {{ demande.nombre_demandes }}],
+                {% endfor %}
+            ]);
+
+            var optionsTotal = {
+                title: 'Nombre total de demandes par matière',
+                bars: 'horizontal'
+            };
+
+            var chartTotal = new google.visualization.BarChart(document.getElementById('chart_div_total'));
+            chartTotal.draw(dataTotal, optionsTotal);
+
+            // Drawing Donut
+            var dataDonut = google.visualization.arrayToDataTable([
+                ['Matière', 'Nombre de demandes'],
+                {% for demande in demandes %}
+                ['{{ demande.matiere }}', {{ demande.nombre_demandes }}],
+                {% endfor %}
+            ]);
+
+            var optionsDonut = {
+                title: 'Matières demandées en pourcentage',
+                pieHole: 0.4,
+            };
+
+            var chartDonut = new google.visualization.PieChart(document.getElementById('chart_div_donut'));
+            chartDonut.draw(dataDonut, optionsDonut);
+        }
+    </script>
+{% endblock %}
