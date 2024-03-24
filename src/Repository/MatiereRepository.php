@@ -20,6 +20,15 @@ class MatiereRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Matiere::class);
     }
+    public function findMatiereByMatiereId(int $id)
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.designation')
+            ->andWhere('m.id = :matiereId')
+            ->setParameter('matiereId', $id)
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Matiere[] Returns an array of Matiere objects

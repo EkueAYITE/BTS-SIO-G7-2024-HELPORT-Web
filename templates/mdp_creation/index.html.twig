@@ -1,0 +1,51 @@
+
+{% block title %}Confirmation de mot de passe{% endblock %}
+
+{% block body %}
+    <html>
+    <head>
+        <title>Confirmation de mot de passe</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+            }
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #007BFF;
+                color: #FFF;
+                text-decoration: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+
+    <h1>Confirmation de mot de passe</h1>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.password) }}
+    {{ form_row(form.confirmPassword) }}
+
+    <input type="submit"  class="btn" id="submitMdp" name="submitMdp">
+    {{ form_end(form) }}
+    </body>
+    </html>
+{% endblock %}

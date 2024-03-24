@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -41,6 +43,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $telephone = null;
+
+    #[ORM\ManyToMany(targetEntity: Competence::class, mappedBy: 'id_user')]
+    private Collection $competences;
+
+    #[ORM\ManyToOne(inversedBy: 'id_user')]
+    private ?Demande $demande = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Soutien::class, orphanRemoval: true)]
+    private Collection $soutiens;
+
+    public function __construct()
+    {
+        $this->competences = new ArrayCollection();
+        $this->soutiens = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -168,6 +185,75 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTelephone(string $telephone): static
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetences(): Collection
+    {
+        return $this->competences;
+    }
+
+    public function addCompetence(Competence $competence): static
+    {
+        if (!$this->competences->contains($competence)) {
+            $this->competences->add($competence);
+            $competence->addIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competence $competence): static
+    {
+        if ($this->competences->removeElement($competence)) {
+            $competence->removeIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getDemande(): ?Demande
+    {
+        return $this->demande;
+    }
+
+    public function setDemande(?Demande $demande): static
+    {
+        $this->demande = $demande;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Soutien>
+     */
+    public function getSoutiens(): Collection
+    {
+        return $this->soutiens;
+    }
+
+    public function addSoutien(Soutien $soutien): static
+    {
+        if (!$this->soutiens->contains($soutien)) {
+            $this->soutiens->add($soutien);
+            $soutien->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoutien(Soutien $soutien): static
+    {
+        if ($this->soutiens->removeElement($soutien)) {
+            // set the owning side to null (unless already changed)
+            if ($soutien->getUser() === $this) {
+                $soutien->setUser(null);
+            }
+        }
 
         return $this;
     }

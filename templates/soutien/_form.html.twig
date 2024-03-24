@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+<input name="demande" type="hidden" value="{{ id }}">
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

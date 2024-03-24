@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demande{% endblock %}
+
+{% block body %}
+    <h1>Demande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Matière</th>
+                <td>{{ demande.idMatiere.designation }}</td>
+            </tr>
+            <tr>
+                <th>Date de création</th>
+                <td>{{ demande.dateUptaded ? demande.dateUptaded|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date de fin</th>
+                <td>{{ demande.dateFinDemande ? demande.dateFinDemande|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{% if demande.statut==0%}
+                    invalité
+                    {% else %}
+                    Validé
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Sous-matières</th>
+                <td>{{ demande.SousMatiere }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demande_index') }}" class="button blue-button">Retour</a>
+
+    <a href="{{ path('app_demande_edit', {'id': demande.id}) }}" class="button blue-button">Éditer</a>
+
+    {{ include('demande/_delete_form.html.twig') }}
+{% endblock %}

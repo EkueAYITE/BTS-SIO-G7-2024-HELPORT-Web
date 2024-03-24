@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SalleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
@@ -18,6 +20,13 @@ class Salle
 
     #[ORM\Column]
     private ?int $etage = null;
+
+
+
+    public function __construct()
+    {
+        $this->soutiens = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -47,4 +56,7 @@ class Salle
 
         return $this;
     }
+
+
+
 }

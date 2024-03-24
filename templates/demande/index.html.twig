@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demande index{% endblock %}
+
+{% block body %}
+    <h1>Demande index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre de demandes</th>
+                <th>Matière</th>
+                <th>Date_uptaded</th>
+                <th>Date_fin_demande</th>
+                <th>Statut</th>
+                <th>Sous_matiere</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for demande in demandes %}
+            <tr>
+                <td>{{ demande.id }}</td>
+                <td>{{ demande.idMatiere.designation }}</td>
+                <td>{{ demande.dateUptaded ? demande.dateUptaded|date('Y-m-d') : '' }}</td>
+                <td>{{ demande.dateFinDemande ? demande.dateFinDemande|date('Y-m-d') : '' }}</td>
+                <td>{% if demande.statut==0%}
+                        invalide
+                    {% else %}
+                        Validé
+                    {% endif %}
+                </td>
+                <td>{{ demande.SousMatiere }}</td>
+                <td>
+                    <a href="{{ path('app_demande_show', {'id': demande.id}) }}" class="button blue-button">Détails</a>
+
+                    <br><br>
+                    <a href="{{ path('app_soutien_new',{'id': demande.id}) }}" class="button blue-button">Accepter </a>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demande_new') }}" class="button blue-button"><b>Créer une demande</b></a>
+{% endblock %}

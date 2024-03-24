@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Soutien{% endblock %}
+
+{% block body %}
+    <h1>Edit Soutien</h1>
+
+    {{ include('soutien/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_soutien_index') }}">back to list</a>
+
+    {{ include('soutien/_delete_form.html.twig') }}
+{% endblock %}

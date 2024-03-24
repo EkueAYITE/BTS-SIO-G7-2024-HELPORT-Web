@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SoutienRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,11 +22,23 @@ class Soutien
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_update = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?int $statut = null;
+    private ?int $status = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Demande $demande = null;
+
+    #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'soutiens')]
+    private Collection $competence;
+
+    public function __construct()
+    {
+        $this->competence = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,21 +74,57 @@ class Soutien
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getStatut(): ?int
+    public function getStatus(): ?int
     {
-        return $this->statut;
+        return $this->status;
     }
 
-    public function setStatut(int $statut): static
+    public function setStatus(int $status): static
     {
-        $this->statut = $statut;
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDemande(): ?Demande
+    {
+        return $this->demande;
+    }
+
+    public function setDemande(Demande $demande): static
+    {
+        $this->demande = $demande;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetence(): Collection
+    {
+        return $this->competence;
+    }
+
+    public function addCompetence(Competence $competence): static
+    {
+        if (!$this->competence->contains($competence)) {
+            $this->competence->add($competence);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competence $competence): static
+    {
+        $this->competence->removeElement($competence);
 
         return $this;
     }

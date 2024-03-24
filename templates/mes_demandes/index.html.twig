@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes demandes{% endblock %}
+
+{% block body %}
+    <h1>Mes demandes</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id de la demande</th>
+            <th>Matière</th>
+            <th>Date de création</th>
+            <th>Date de fin</th>
+            <th>Statut</th>
+            <th>Sous-matières</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for demande in demandes %}
+            <tr>
+                <td>{{ demande.id }}</td>
+                <td>{{ demande.idMatiere.designation }}</td>
+                <td>{{ demande.dateUptaded ? demande.dateUptaded|date('Y-m-d') : '' }}</td>
+                <td>{{ demande.dateFinDemande ? demande.dateFinDemande|date('Y-m-d') : '' }}</td>
+                <td>{% if demande.statut==0%}
+                        invalide
+                    {% else %}
+                        Validé
+                    {% endif %}
+                </td>
+                <td>{{ demande.SousMatiere }}</td>
+                <td>
+                    <a href="{{ path('app_demande_edit', {'id': demande.id}) }}" class="button blue-button">Éditer</a></td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
